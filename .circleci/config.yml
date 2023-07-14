@@ -20,7 +20,7 @@ workflows:
         and:
           # This condition does not work
           - not:
-            equal: [ main, << pipeline.git.branch >> ]
+              equal: [ main, << pipeline.git.branch >> ]
     jobs:
       - say_branch
   only_not_match_main:
