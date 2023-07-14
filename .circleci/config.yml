@@ -2,46 +2,33 @@
 version: 2.1
 
 jobs:
-  # Job one with a unique name
-  say_hello:
+  say_branch:
     docker:
      - image: cimg/base:2022.05
     steps:
-      - run: echo "Say hello to YAML!"
-  # Job two with a unique name
-  say_goodbye:
-    docker:
-     - image: cimg/base:2022.05
-    steps:
-      - run: echo "Say goodbye to YAML!"
+      - run: echo << pipeline.git.branch >>
 
 workflows:
   # Name of workflow
-  hello_and_goodbye:
+  only_equal_main:
     when: 
         and:
           - equal: [ main, << pipeline.git.branch >> ]
-    # List of jobs that will run
     jobs:
-      - say_hello
-      - say_goodbye
-  hello_and_goodbye2:
+      - say_branch
+  only_not_equal_main:
     when: 
         and:
           - not:
             equal: [ main, << pipeline.git.branch >> ]
-    # List of jobs that will run
     jobs:
-      - say_hello
-      - say_goodbye
-  hello_and_goodbye3:
+      - say_branch
+  only_not_match_main:
     when: 
         and:
           - not:
               matches:
                 pattern: "^main$"
                 value: << pipeline.git.branch >>
-    # List of jobs that will run
     jobs:
-      - say_hello
-      - say_goodbye
+      - say_branch
