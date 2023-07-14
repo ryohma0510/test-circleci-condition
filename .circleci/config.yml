@@ -18,6 +18,29 @@ jobs:
 workflows:
   # Name of workflow
   hello_and_goodbye:
+    when: 
+        and:
+          - equal: [ main, << pipeline.git.branch >> ]
+    # List of jobs that will run
+    jobs:
+      - say_hello
+      - say_goodbye
+  hello_and_goodbye2:
+    when: 
+        and:
+          - not:
+            equal: [ main, << pipeline.git.branch >> ]
+    # List of jobs that will run
+    jobs:
+      - say_hello
+      - say_goodbye
+  hello_and_goodbye3:
+    when: 
+        and:
+          - not:
+              matches:
+                pattern: "^main$"
+                value: << pipeline.git.branch >>
     # List of jobs that will run
     jobs:
       - say_hello
